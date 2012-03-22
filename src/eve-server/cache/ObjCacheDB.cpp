@@ -702,19 +702,63 @@ PyRep *ObjCacheDB::Generate_eveGraphics()
 		_log(SERVICE__ERROR, "Error in query for cached object 'config.BulkData.graphics': %s", res.error.c_str());
 		return NULL;
 	}
-	return DBResultToCRowset(res);
+	
+	DBRowDescriptor* header = new DBRowDescriptor;
+	header->AddColumn("graphicID", DBTYPE_I4);
+	header->AddColumn("graphicFile", DBTYPE_STR);
+	header->AddColumn("graphicName", DBTYPE_STR);
+	header->AddColumn("description", DBTYPE_WSTR);
+	header->AddColumn("obsolete", DBTYPE_BOOL);
+	header->AddColumn("graphicType", DBTYPE_STR);
+	header->AddColumn("collisionFile", DBTYPE_STR);
+	header->AddColumn("paperdollFile", DBTYPE_STR);
+	header->AddColumn("animationTemplate", DBTYPE_I4);
+	header->AddColumn("collidable", DBTYPE_BOOL);
+	header->AddColumn("explosionID", DBTYPE_I4);
+	header->AddColumn("directoryID", DBTYPE_I4);
+	header->AddColumn("graphicMinX", DBTYPE_R8);
+	header->AddColumn("graphicMinY", DBTYPE_R8);
+	header->AddColumn("graphicMinZ", DBTYPE_R8);
+	header->AddColumn("graphicMaxX", DBTYPE_R8);
+	header->AddColumn("graphicMaxY", DBTYPE_R8);
+	header->AddColumn("graphicMaxZ", DBTYPE_R8);
+
+
+	return DBResultToCRowset(res, header);
 }
 
 PyRep *ObjCacheDB::Generate_invTypes()
 {
 	DBQueryResult res;
-	const char *q = "SELECT typeID, groupID, typeName, description, graphicID, radius, mass, volume, capacity, portionSize, raceID, basePrice, published, marketGroupID, chanceOfDuplicating, soundID, categoryID, iconID, attributeID, dataID FROM invTypes";
+	const char *q = "SELECT typeID, groupID, typeName, description, graphicID, radius, mass, volume, capacity, portionSize, raceID, basePrice, published, marketGroupID, chanceOfDuplicating, soundID, categoryID, iconID, dataID FROM invTypes";
 	if(sDatabase.RunQuery(res, q)==false)
 	{
 		_log(SERVICE__ERROR, "Error in query for cached object 'config.BulkData.types': %s", res.error.c_str());
 		return NULL;
 	}
-	return DBResultToCRowset(res);
+
+	DBRowDescriptor* header = new DBRowDescriptor;
+	header->AddColumn("typeID", DBTYPE_I4);
+	header->AddColumn("groupID", DBTYPE_I2);
+	header->AddColumn("typeName", DBTYPE_WSTR);
+	header->AddColumn("description", DBTYPE_WSTR);
+	header->AddColumn("graphicID", DBTYPE_I4);
+	header->AddColumn("radius", DBTYPE_R8);
+	header->AddColumn("mass", DBTYPE_R8);
+	header->AddColumn("volume", DBTYPE_R8);
+	header->AddColumn("capacity", DBTYPE_R8);
+	header->AddColumn("portionSize", DBTYPE_I4);
+	header->AddColumn("raceID", DBTYPE_UI1);
+	header->AddColumn("basePrice", DBTYPE_CY);
+	header->AddColumn("published", DBTYPE_BOOL);
+	header->AddColumn("marketGroupID", DBTYPE_I2);
+	header->AddColumn("chanceOfDuplicating", DBTYPE_R8);
+	header->AddColumn("soundID", DBTYPE_I4);
+	header->AddColumn("categoryID", DBTYPE_I2);
+	header->AddColumn("iconID", DBTYPE_I4);
+	header->AddColumn("dataID", DBTYPE_I4);
+
+	return DBResultToCRowset(res, header);
 }
 
 PyRep *ObjCacheDB::Generate_invMetaTypes()

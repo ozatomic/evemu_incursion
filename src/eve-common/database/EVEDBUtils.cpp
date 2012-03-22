@@ -488,9 +488,8 @@ PyTuple *DBResultToPackedRowListTuple( DBQueryResult &result )
 
 /* this is a very monstrous implementation of a Python Class/Function call
  */
-PyObjectEx *DBResultToCRowset( DBQueryResult &result )
+PyObjectEx *DBResultToCRowset( DBQueryResult &result, DBRowDescriptor *header )
 {
-    DBRowDescriptor *header = new DBRowDescriptor( result );
 	CRowSet *rowset = new CRowSet( &header );
 
 	DBResultRow row;
@@ -501,6 +500,12 @@ PyObjectEx *DBResultToCRowset( DBQueryResult &result )
 	}
 
 	return rowset;
+}
+
+PyObjectEx *DBResultToCRowset( DBQueryResult &result )
+{
+    DBRowDescriptor *header = new DBRowDescriptor( result );
+	return DBResultToCRowset(result, header);
 }
 
 PyPackedRow *DBRowToPackedRow( DBResultRow &row )

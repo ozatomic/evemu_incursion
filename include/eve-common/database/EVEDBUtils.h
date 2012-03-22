@@ -28,6 +28,7 @@
 
 #include "database/dbcore.h"
 #include "network/packet_types.h"
+#include "python/PyRep.h"
 
 class PyRep;
 class PyObject;
@@ -60,6 +61,9 @@ void DBResultToIntIntlistDict(DBQueryResult &result, std::map<int32, PyRep *> &i
 
 PyList *DBResultToPackedRowList(DBQueryResult &result);
 PyTuple *DBResultToPackedRowListTuple(DBQueryResult &result);
+
+
+PyObjectEx *DBResultToCRowset(DBQueryResult &result, DBRowDescriptor *header);
 PyObjectEx *DBResultToCRowset(DBQueryResult &result);
 
 //single rows:
